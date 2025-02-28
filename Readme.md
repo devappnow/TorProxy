@@ -10,6 +10,12 @@ Một thư viện Node.js đơn giản để tạo và quản lý các kết n�
 - Cấu hình tùy chỉnh cho mỗi instance Tor
 - Tự động dọn dẹp tài nguyên khi kết thúc
 
+## Lưu ý quan trọng
+
+> **Thời gian khởi động:** Quá trình khởi động Tor có thể mất đến 90 giây tùy thuộc vào cấu hình máy tính và mạng của bạn. Trong môi trường chậm, bạn có thể cần phải điều chỉnh thời gian timeout bằng cách tùy chỉnh mã nguồn.
+
+> **Yêu cầu tor.exe:** Đảm bảo tệp tor.exe được đặt đúng vị trí như mô tả trong phần cài đặt bên dưới. Nếu không, quá trình khởi động sẽ thất bại.
+
 ## Cài đặt
 
 ```bash
@@ -20,7 +26,31 @@ npm install tor-proxy
 
 - Node.js 12.0.0 trở lên
 - Windows (hiện tại chỉ hỗ trợ Windows do sử dụng tor.exe)
-- Tor executable (`tor.exe`) phải được đặt trong thư mục gốc của dự án
+- Tor executable (`tor.exe`) phải có trong dự án (xem phần hướng dẫn bên dưới)
+
+### Cài đặt tor.exe
+
+Thư viện này yêu cầu tệp `tor.exe` để hoạt động. Có một vài cách để đảm bảo tệp này được tìm thấy:
+
+1. **Cách 1** (được khuyến nghị): Đặt `tor.exe` vào thư mục gốc của dự án của bạn
+   ```
+   project-folder/
+   ├── node_modules/
+   ├── tor.exe          <-- Đặt tor.exe ở đây
+   ├── package.json
+   └── các file khác...
+   ```
+
+2. **Cách 2**: Chỉ định đường dẫn đến tor.exe khi khởi tạo:
+   ```javascript
+   const proxy = new TorProxy({
+     torPath: '/đường/dẫn/đến/tor.exe'
+   });
+   ```
+
+3. **Cách 3**: Thêm tor.exe vào biến PATH của hệ thống
+
+> **Lưu ý**: Bạn có thể tải xuống tor.exe từ trang web chính thức của Tor Project hoặc từ [repository](https://github.com/torydev/tor-proxy-binaries/releases) (đường dẫn này chỉ là ví dụ, vui lòng tạo repo của riêng bạn).
 
 ## Sử dụng cơ bản
 
@@ -165,6 +195,8 @@ async function main() {
 
 main();
 ```
+
+> **Lưu ý:** Ví dụ này yêu cầu cài đặt thêm gói `axios`: `npm install axios`. Gói `socks-proxy-agent` đã được bao gồm trong dependencies của thư viện.
 
 ## API Reference
 
