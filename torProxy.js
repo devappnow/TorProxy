@@ -59,7 +59,7 @@ Vui lòng đảm bảo tor.exe được đặt ở một trong các vị trí sa
         return 'tor.exe'; // Sẽ tạo lỗi nếu không tìm thấy trong PATH
     }
 
-    async start() {
+    async start(timeout = 120000) {
         try {
             // Tạo thư mục data riêng cho mỗi instance
             if (!fs.existsSync(this.dataDir)) {
@@ -89,10 +89,9 @@ Vui lòng đảm bảo tor.exe được đặt ở một trong các vị trí sa
             // Đợi cho Tor khởi động hoàn tất trước khi thiết lập controller
             let bootstrapComplete = false;
             await new Promise((resolve, reject) => {
-                // Tăng thời gian timeout lên 90 giây (có thể mất thời gian dài hơn trên máy chậm)
                 const timeout = setTimeout(() => {
-                    reject(new Error('Timeout khi khởi động Tor (90 giây)'));
-                }, 90000);
+                    reject(new Error(`Timeout khi khởi động Tor (${timeout}ms)`));
+                }, timeout);
 
                 this.torProcess.stdout.on('data', (data) => {
                     const output = data.toString();
